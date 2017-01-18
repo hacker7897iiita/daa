@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<time.h>
+ 
+void swap(int* a, int* b)
+{
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+void insertionsort (int arr[], int low, int high)
+{
+	int i,j,key;
+	for(i=low+1;i<high;i++)
+	{
+		key=i;
+		j=i-1;
+		while(arr[key]<arr[j] && j>=0)
+		{
+			j=j-1;
+		}
+		swap(&arr[key],&arr[j+1]);
+	}
+	return;
+}
+ 
+int partition (int arr[], int low, int high)
+{
+    int j;
+    int pivot = arr[high]; 
+    int i = (low - 1);
+ 
+    for ( j = low; j <= high- 1; j++)
+    {
+       
+        if (arr[j] <= pivot)
+        {
+            i++;    
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+
+void quickSort(int arr[], int low, int high,int k)
+{
+    if(high-low+1<k){
+        insertionsort(arr,low,high);
+	return; 
+    }
+    else if(low < high)
+    {
+      
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1,k);
+        quickSort(arr, pi + 1, high,k);
+    }
+   
+}
+ 
+
+void printArray(int arr[], int size)
+{
+    int i;
+    for (i=0; i < size; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+ 
+
+int main()
+{
+    int n,i;
+    clock_t begin,end;
+    scanf("%d",&n);
+    int arr[n],k;
+    for(i=0;i<n;i++)
+   	    scanf("%d",&arr[i]);
+    for(k=3;k<6;k++)
+    {
+       begin = clock();
+       quickSort(arr,0,n-1,k);
+       end = clock();
+       printArray(arr, n);
+       printf("\n%d,%Lf",k,(long double)end-begin);
+       return 0;
+   }
+}

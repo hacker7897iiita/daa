@@ -1,0 +1,91 @@
+# include <stdio.h>
+# include <stdlib.h>
+# include <time.h>
+
+void quickSort (int *, int, int, int);
+int partition (int *, int, int);
+void bubbleSort (int *, int, int);
+void hybridSort (int *, int);
+
+int main()
+{
+	int *arr, n, i;
+	srand ((unsigned int) time (NULL));
+	scanf ("%d", &n);
+	arr = (int *) malloc (n*sizeof (int));
+	hybridSort (arr, n);
+	return 0;
+}
+
+void hybridSort(int *arr, int n)
+{
+	
+	int i, k;
+	clock_t begin, end;
+	for (i = 0; i < n; ++i) {
+		arr[i] = (int) rand () % 1000;
+	}
+	int act[n];
+	for (k = 1; k <= n/2; ++k) {
+		for (i = 0; i < n; act[i] = arr[i], ++i);
+		begin = clock ();
+		quickSort (act, 0, n - 1, k);
+		end = clock ();
+		printf( "%d %li\n", k, end - begin);
+	}
+	for (i = 0; i < n; ++i) {
+		printf("\n%d ",arr[i]);
+	}
+}
+
+int partition (int arr[], int low, int high)
+{
+	int i, j, pivot, temp;
+	pivot=low;
+	i=low;
+	j=high;
+	while (i < j) {
+		while (arr[i] <= arr[pivot] && i < high) {
+			i++;
+		}
+		while (arr[j] > arr[pivot]) {
+			j--;
+		}
+		if (i < j) {
+			temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
+		}
+	}
+	temp = arr[pivot];
+	arr[pivot] = arr[j];
+	arr[j] = temp;
+	return j;
+}
+
+void quickSort (int arr[], int low, int high, int k)
+{
+	if (low < high) {
+        if (high - low + 1 > k) {
+            int pi = partition (arr, low, high);
+            quickSort (arr, low, pi - 1, k);
+            quickSort (arr, pi + 1, high, k);
+        } else {
+            bubbleSort (arr, low, high);
+        }
+	}
+}
+
+void bubbleSort (int arr[], int i, int j)
+{
+	int x, y, t;
+	for (x = i; x <= j; ++x) {
+		for (y = i; y <= j - 1; ++y) {
+			if (arr[y] > arr[y + 1]) {
+				t = arr[y];
+				arr[y] = arr[y + 1];
+				arr[y + 1] = t;
+			}
+		}
+	}
+}
